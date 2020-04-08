@@ -26,7 +26,7 @@ const routes: Routes = [
         path:'new',
         loadChildren:()=> import('./offers/new-offer/new-offer.module').then(m=> m.NewOfferPageModule)
       },{
-        path:'edit:placeId',
+        path:'edit/:placeId',
         loadChildren:()=> import('./offers/edit-offer/edit-offer.module').then(m=> m.EditOfferPageModule),
       },{
         path:':placeId',

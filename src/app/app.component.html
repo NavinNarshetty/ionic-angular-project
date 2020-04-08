@@ -1,3 +1,39 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu side="start" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>MMT</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle>
+            <ion-item lines="none" routerLink="/places/tabs/discover" button>
+                <ion-buttons>
+                    <ion-icon name="airplane-outline"></ion-icon>
+                    <ion-label>Discover</ion-label>
+                </ion-buttons>
+            </ion-item>
+        </ion-menu-toggle>
+
+        <ion-menu-toggle>
+            <ion-item lines="none" routerLink="/bookings" button>
+                <ion-buttons>
+                    <ion-icon name="business-outline"></ion-icon>
+                    <ion-label>Your Bookings</ion-label>
+                  </ion-buttons>
+            </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+            <ion-item lines="none" button (click)="onLogout()">
+                <ion-buttons>
+                    <ion-icon name="exit-outline"></ion-icon>
+                    <ion-label>Logout</ion-label>
+                  </ion-buttons>
+            </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>

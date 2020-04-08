@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end" (click)="onCancel()">
+      <ion-icon name="trash-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      {{selectedPlace.title}}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h3>
+    {{selectedPlace.description}}
+  </h3>
+  
+    <ion-button  color="primary" (click)="onBook()">Book</ion-button>
+  
+ 
+</ion-content>

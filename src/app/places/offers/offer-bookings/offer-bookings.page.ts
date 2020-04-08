@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Place } from '../../place.module';
+import { ActivatedRoute, Params } from '@angular/router';
+import { NavController } from '@ionic/angular';
+import { PlaceService } from '../../place.service';
 
 @Component({
   selector: 'app-offer-bookings',
@@ -7,9 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OfferBookingsPage implements OnInit {
 
-  constructor() { }
+  public place:Place;
+
+  constructor(private _route:ActivatedRoute, private navCtrl:NavController, private _placeservice:PlaceService) { }
 
   ngOnInit() {
+    this._route.params.subscribe((param:Params)=>{
+      if(!param){
+        this.navCtrl.navigateBack('/place/tabs/offers')
+      }
+      this.place = this._placeservice.findPlace(param.placeId)
+      console.log(this.place,"single place")
+    })
   }
 
 }
