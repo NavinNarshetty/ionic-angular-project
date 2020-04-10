@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PlaceService } from '../place.service';
+import { SegmentChangeEventDetail } from '@ionic/core';
 
 @Component({
   selector: 'app-discover',
@@ -14,6 +15,10 @@ export class DiscoverPage implements OnInit {
   ngOnInit() {
     this.loadedPlaces = this._placeservice.places;
     console.log(this.loadedPlaces);
+  }
+
+  onFilterPlaces(event:CustomEvent<SegmentChangeEventDetail>){
+    console.log(event.detail)
   }
 
 }

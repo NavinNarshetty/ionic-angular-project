@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { BookingService } from './bookings.service';
+import { Booking } from './bookings.model';
+import { IonItemSliding } from '@ionic/angular';
 
 @Component({
   selector: 'app-bookings',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BookingsPage implements OnInit {
 
-  constructor() { }
+  public yourBookings:Booking[];
+
+  constructor(private _bookingservice:BookingService) { }
 
   ngOnInit() {
+    this.yourBookings = this._bookingservice.bookings;
   }
 
+  deleteBooking(id:string , slideRef:IonItemSliding){
+    console.log("Deleted");
+    slideRef.close();
+  }
 }

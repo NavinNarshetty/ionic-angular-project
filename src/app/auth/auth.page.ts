@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-auth',
@@ -9,14 +10,25 @@ import { Router } from '@angular/router';
 })
 export class AuthPage implements OnInit {
 
-  constructor(private _authservice:AuthService , private router:Router) { }
+  constructor(private _authservice:AuthService , private router:Router , private _loadCtrl:LoadingController) { }
 
   ngOnInit() {
   }
 
   onLogin(){
     this._authservice.login();
-    this.router.navigateByUrl('/places/tabs/discover')
+    this._loadCtrl.create({
+      keyboardClose:true,
+      message:'Logging in ...',
+      spinner:"circular",
+
+    }).then((spinEl)=>{
+      spinEl.present();
+      setTimeout(() => {
+        spinEl.dismiss();
+        this.router.navigateByUrl('/places/tabs/discover')
+      }, 1500);
+    })
   }
 
 }
