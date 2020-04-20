@@ -44,7 +44,8 @@ export class AuthPage implements OnInit {
     if(this.isLogin){
       console.log(email,password);
     }
-    
+    this.router.navigateByUrl('/places/tabs/discover')
+
   }
   onSwitch(){
     this.isLogin = !this.isLogin;

@@ -1,12 +1,58 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons>
+    <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/offers"></ion-back-button>
     </ion-buttons>
     <ion-title>New offer</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCreateOffer()" [disabled]="!offerForm.valid">
+          <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form [formGroup]="offerForm">
+      <ion-grid>
+          <ion-row>
+            <ion-col size-sm="6" offset-sm="3">
+              <ion-item>
+                <ion-label position="floating">Title</ion-label>
+                <ion-input type="text" formControlName="title"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="!offerForm.get('title').valid && offerForm.get('title').touched" lines="none">
+                <ion-text>Enter Valid Title</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Description</ion-label>
+                <ion-textarea rows="3" formControlName="description"></ion-textarea>
+              </ion-item>
+              <ion-item lines="none" *ngIf="!offerForm.get('description').valid && offerForm.get('description').touched"> 
+                  <ion-text>Description should be atleast 100 characters</ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Price</ion-label>
+                <ion-input type="number" formControlName="price"></ion-input>
+              </ion-item>
+              <ion-item lines="none" *ngIf="!offerForm.get('price').valid  && offerForm.get('price').touched">
+                <ion-text>
+                  Enter a Valid price
+                </ion-text>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">From</ion-label>
+                <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-14" max="2012-12-09" formControlName="fromDate"></ion-datetime>
+              </ion-item>
+              <ion-item>
+                  <ion-label position="floating">To</ion-label>
+                  <ion-datetime displayFormat="MM/DD/YYYY" min="1994-03-15" max="2012-12-09" formControlName="toDate"></ion-datetime>
+                </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+  </form>
+
 
 </ion-content>
