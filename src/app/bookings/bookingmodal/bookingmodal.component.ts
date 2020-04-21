@@ -39,9 +39,9 @@ export class BookingmodalComponent implements OnInit {
       bookingData:{
         firstName:this.bookingForm.value['first-name'],
         lastName:this.bookingForm.value['last-name'],
-        noOfGuests:this.bookingForm.value['no-of-guest'],
-        avaliablefrom:this.bookingForm.value['from-date'],
-        avaliableto:this.bookingForm.value['to-date']
+        noOfGuests:+this.bookingForm.value['no-of-guest'],
+        avaliablefrom:new Date(this.bookingForm.value['from-date']),
+        avaliableto:new Date(this.bookingForm.value['to-date'])
       }
     },'confirm')
   }

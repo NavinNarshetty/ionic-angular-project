@@ -6,7 +6,8 @@ export class Place {
         public description:string ,
         public price:number,
         public avaliableFrom:Date,
-        public avaliableTo:Date) {
+        public avaliableTo:Date,
+        public userId:string) {
         
     }
 }

@@ -4,11 +4,12 @@
       <ion-back-button [defaultHref]='"/places/tabs/offers/" + place.id'></ion-back-button>
     </ion-buttons>
     <ion-title>{{place.title}}</ion-title>
+    
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="editForm">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editForm">
   <ion-grid>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3">
@@ -21,6 +22,14 @@
           <ion-input type="text" formControlName="description"></ion-input>
         </ion-item>
       </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+          <ion-button type="submit" [disabled]="!editForm.valid" expand="block">
+              <ion-label>Submit</ion-label> 
+           </ion-button>
+      </ion-col>
+
     </ion-row>
   </ion-grid>
 </form>

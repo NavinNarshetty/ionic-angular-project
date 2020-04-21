@@ -7,49 +7,49 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content >
   <ion-segment value="all" (ionChange)="onFilterPlaces($event)">
     <ion-segment-button value="all" checked>All Places</ion-segment-button>
     <ion-segment-button value="bookable">Bookable Places</ion-segment-button>
   </ion-segment>
-<ion-grid>
-    <ion-row>
-        <ion-col size-xs="12">
-          <ion-card >
-            <ion-card-header>
-                <ion-card-title>{{loadedPlaces[0].title}}</ion-card-title>
-                <ion-card-subtitle>{{ loadedPlaces[0].price | currency}} / Night</ion-card-subtitle>
-            </ion-card-header>
-            <ion-img [src]="loadedPlaces[0].imageUrl"></ion-img>
-            <ion-card-content>
-              <p>{{loadedPlaces[0].description}}</p>
-            </ion-card-content>
-             <div class="ion-text-right">
-               <ion-button fill="clear" color="primary" [routerLink]="['/','places','tabs','discover',loadedPlaces[0].id]">
-                 <ion-label>More</ion-label>
-               </ion-button>
-             </div>
-          </ion-card>
-        </ion-col>
-      </ion-row>
+  <ion-grid *ngIf="releventPlaces.length > 0">
       <ion-row>
-        <ion-col>
-          <ion-list>
-            <ion-item 
-            *ngFor="let places of loadedPlaces.slice(1)" 
-            [routerLink]="['/','places','tabs','discover',places.id]"
-            detail> 
-              <ion-thumbnail slot="start">
-                <ion-img [src]="places.imageUrl"></ion-img>
-              </ion-thumbnail>
-              <ion-label>
-                <h2>{{places.title}}</h2>
-              <p>{{places.description}}</p>     
-             </ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-col>
-      </ion-row>
-</ion-grid>
+          <ion-col size-xs="12">
+            <ion-card >
+              <ion-card-header>
+                  <ion-card-title>{{releventPlaces[0].title}}</ion-card-title>
+                  <ion-card-subtitle>{{ releventPlaces[0].price | currency}} / Night</ion-card-subtitle>
+              </ion-card-header>
+              <ion-img [src]="releventPlaces[0].imageUrl"></ion-img>
+              <ion-card-content>
+                <p>{{releventPlaces[0].description}}</p>
+              </ion-card-content>
+              <div class="ion-text-right">
+                <ion-button fill="clear" color="primary" [routerLink]="['/','places','tabs','discover',releventPlaces[0].id]">
+                  <ion-label>More</ion-label>
+                </ion-button>
+              </div>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-list>
+              <ion-item 
+              *ngFor="let places of newloadedPlaces" 
+              [routerLink]="['/','places','tabs','discover',places.id]"
+              detail> 
+                <ion-thumbnail slot="start">
+                  <ion-img [src]="places.imageUrl"></ion-img>
+                </ion-thumbnail>
+                <ion-label>
+                  <h2>{{places.title}}</h2>
+                <p>{{places.description}}</p>     
+              </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+  </ion-grid>
 
 </ion-content>

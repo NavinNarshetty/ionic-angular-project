@@ -15,11 +15,15 @@ export class BookingsPage implements OnInit {
   constructor(private _bookingservice:BookingService) { }
 
   ngOnInit() {
-    this.yourBookings = this._bookingservice.bookings;
+   this._bookingservice.bookings.subscribe((bookings)=>{
+    this.yourBookings = bookings;
+   });
   }
 
-  deleteBooking(id:string , slideRef:IonItemSliding){
+  deleteBooking(bookingId:string , slideRef:IonItemSliding){
     console.log("Deleted");
     slideRef.close();
+    this._bookingservice.cancelBooking(bookingId).subscribe();
+
   }
 }

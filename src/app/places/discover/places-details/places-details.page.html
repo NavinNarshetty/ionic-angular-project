@@ -8,5 +8,19 @@
 </ion-header>
 
 <ion-content>
-  <ion-button class="ion-margin" color="primary" (click)="onBook()">Book</ion-button>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-img [src]="place.imageUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          {{place.description}}
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-button *ngIf="isBookable" class="ion-margin" expand="block" color="primary" (click)="onBook()">Book</ion-button>
 </ion-content>
