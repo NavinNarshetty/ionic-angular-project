@@ -18,6 +18,7 @@ export class PlacesDetailsPage implements OnInit,OnDestroy {
   public place:Place;
   private placeSub:Subscription;
   public isBookable:boolean;
+  public isloading:boolean = false;
 
   constructor(private navCtrl:NavController ,
      private _route:ActivatedRoute ,
@@ -35,7 +36,9 @@ export class PlacesDetailsPage implements OnInit,OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/discover')
         return;
       }
+      this.isloading = true;
       this.placeSub=this._placeservice.findPlace(param.placeId).subscribe((place)=>{
+        this.isloading = false;
         this.place = place;
         this.isBookable = place.userId !== this._authservice.userId 
       });

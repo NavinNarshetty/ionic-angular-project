@@ -19,6 +19,9 @@ export class BookingsPage implements OnInit {
     this.yourBookings = bookings;
    });
   }
+  ionViewWillEnter(){
+    this._bookingservice.fetchBooking().subscribe()
+  }
 
   deleteBooking(bookingId:string , slideRef:IonItemSliding){
     console.log("Deleted");

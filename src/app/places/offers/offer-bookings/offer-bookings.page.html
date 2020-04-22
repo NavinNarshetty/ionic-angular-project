@@ -3,13 +3,15 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/offers"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{place.title}}</ion-title>
+    <div *ngIf="place">
+      <ion-title>{{place.title}}</ion-title>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-button class="ion-margin" color="primary" [routerLink]="['/','places','tabs','offers','edit', place.id]">
+  <ion-button class="ion-margin" color="primary" [routerLink]="['/','places','tabs','offers','edit', placeId]">
     <ion-label>Edit</ion-label>
   </ion-button>
 </ion-content>

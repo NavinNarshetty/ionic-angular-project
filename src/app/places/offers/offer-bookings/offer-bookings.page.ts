@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 export class OfferBookingsPage implements OnInit,OnDestroy {
 
   public place:Place;
+  public placeId:string;
   private ofeerplaceSubscription:Subscription;
 
   constructor(private _route:ActivatedRoute, private navCtrl:NavController, private _placeservice:PlaceService) { }
@@ -22,6 +23,7 @@ export class OfferBookingsPage implements OnInit,OnDestroy {
       if(!param){
         this.navCtrl.navigateBack('/place/tabs/offers')
       }
+      this.placeId = param.placeId;
       this.ofeerplaceSubscription=  this._placeservice.findPlace(param.placeId).subscribe((place)=>{
         this.place = place;
       })

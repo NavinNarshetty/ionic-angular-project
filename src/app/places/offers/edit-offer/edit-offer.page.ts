@@ -14,6 +14,8 @@ import { Subscription } from 'rxjs';
 export class EditOfferPage implements OnInit,OnDestroy {
   public place:Place;
   editForm:FormGroup;
+  public placeId:string;
+  public isLoading:boolean=false;
   private placeSubscription:Subscription;
 
   constructor(private _route:ActivatedRoute,private _placeservice:PlaceService , private navCtrl:NavController,private router:Router,private loadCtrl:LoadingController) { }
@@ -24,6 +26,8 @@ export class EditOfferPage implements OnInit,OnDestroy {
         this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
+      this.isLoading = true;
+      this.placeId= param.placeId;
       this.placeSubscription=this._placeservice.findPlace(param.placeId).subscribe((place)=>{
         this.place = place;
         this.editForm = new FormGroup({
@@ -36,6 +40,7 @@ export class EditOfferPage implements OnInit,OnDestroy {
             validators:[Validators.required]
           })
         })
+        this.isLoading= false;
       });
     })
   }
