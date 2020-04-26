@@ -32,7 +32,7 @@ export class BookingService {
     addBooking(placeId:string,noofguest:number,title:string,firstname:string,lastname:string,fromdate:Date,todate:Date){
         const newBooking = new Booking(Math.random().toString(),placeId,this._authservice.userId,noofguest,title,firstname,lastname,fromdate,todate);
         let generatedId=""
-        return this._http.post<{name:string}>('https://ionic-angular-b7192.firebaseio.com/booking.json',
+        return this._http.post<{name:string}>('https://angular-ionic-915f6.firebaseio.com//booking.json',
         {
             ...newBooking,id:null
         }).pipe(switchMap((resultData)=>{
@@ -47,7 +47,7 @@ export class BookingService {
     }
 
     fetchBooking(){
-        return this._http.get<{[key:string]:bookingData}>(`https://ionic-angular-b7192.firebaseio.com/booking.json?orderBy="userId"&equalTo="${this._authservice.userId}"`).pipe(map((bookingdata)=>{
+        return this._http.get<{[key:string]:bookingData}>(`https://angular-ionic-915f6.firebaseio.com//booking.json?orderBy="userId"&equalTo="${this._authservice.userId}"`).pipe(map((bookingdata)=>{
             let bookings=[];
             for(let key in bookingdata ){
                 if(bookingdata.hasOwnProperty(key)){
@@ -71,7 +71,7 @@ export class BookingService {
     }
 
     cancelBooking(bookingId:string){
-        return this._http.delete(`https://ionic-angular-b7192.firebaseio.com/booking/${bookingId}.json`).pipe(
+        return this._http.delete(`https://angular-ionic-915f6.firebaseio.com//booking/${bookingId}.json`).pipe(
             switchMap(()=>{
                 return this.bookings;
             }),

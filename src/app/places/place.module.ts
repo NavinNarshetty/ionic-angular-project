@@ -1,3 +1,5 @@
+import { PlaceData } from '../shared/picker/location-picker/location.module';
+
 export class Place {
     constructor(
         public id:string ,
@@ -7,7 +9,8 @@ export class Place {
         public price:number,
         public avaliableFrom:Date,
         public avaliableTo:Date,
-        public userId:string) {
+        public userId:string,
+        public location:PlaceData) {
         
     }
 }

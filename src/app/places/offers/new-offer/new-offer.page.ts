@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { PlaceService } from '../../place.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { PlaceData } from 'src/app/shared/picker/location-picker/location.module';
 
 @Component({
   selector: 'app-new-offer',
@@ -35,7 +36,17 @@ export class NewOfferPage implements OnInit {
       toDate:new FormControl({
         updateOn:'blur',
         validators:[Validators.required]
+      }),
+      location:new FormControl({
+        validators:[Validators.required]
       })
+    })
+  }
+
+  onLocationPickEvent(locationData:PlaceData){
+    console.log(locationData,"oooo")
+    this.offerForm.patchValue({
+      location:locationData
     })
   }
   onCreateOffer(){
@@ -44,7 +55,7 @@ export class NewOfferPage implements OnInit {
       message:'Creating the Place...'
     }).then((loadingEl)=>{
       loadingEl.present();
-      this._placeservice.addPlaces(this.offerForm.value.title,this.offerForm.value.description,+this.offerForm.value.price,new Date(this.offerForm.value.fromDate),new Date(this.offerForm.value.toDate)).subscribe(()=>{
+      this._placeservice.addPlaces(this.offerForm.value.title,this.offerForm.value.description,+this.offerForm.value.price,new Date(this.offerForm.value.fromDate),new Date(this.offerForm.value.toDate),this.offerForm.value.location).subscribe(()=>{
         loadingEl.dismiss();
         this.offerForm.reset();
         this._router.navigateByUrl("/places/tabs/offers")
