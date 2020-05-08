@@ -30,12 +30,16 @@ export class BookingService {
     }
 
     addBooking(placeId:string,noofguest:number,title:string,firstname:string,lastname:string,fromdate:Date,todate:Date){
-        const newBooking = new Booking(Math.random().toString(),placeId,this._authservice.userId,noofguest,title,firstname,lastname,fromdate,todate);
+        let newBooking:Booking
         let generatedId=""
-        return this._http.post<{name:string}>('https://angular-ionic-915f6.firebaseio.com//booking.json',
+        return this._authservice.userId.pipe(take(1),switchMap(userId=>{
+            newBooking = new Booking(Math.random().toString(),placeId,userId,noofguest,title,firstname,lastname,fromdate,todate);
+            return this._http.post<{name:string}>('https://angular-ionic-915f6.firebaseio.com//booking.json',
         {
             ...newBooking,id:null
-        }).pipe(switchMap((resultData)=>{
+        })
+        }),
+        switchMap((resultData)=>{
             generatedId = resultData.name;
             return this.bookings;
         }),
@@ -47,7 +51,15 @@ export class BookingService {
     }
 
     fetchBooking(){
-        return this._http.get<{[key:string]:bookingData}>(`https://angular-ionic-915f6.firebaseio.com//booking.json?orderBy="userId"&equalTo="${this._authservice.userId}"`).pipe(map((bookingdata)=>{
+        return this._authservice.userId
+        .pipe(
+            take(1),
+            switchMap(userId=>{
+                if(!userId){
+                     new Error('no error found');
+                }
+                return this._http.get<{[key:string]:bookingData}>(`https://angular-ionic-915f6.firebaseio.com//booking.json?orderBy="userId"&equalTo="${userId}"`)
+            }),map((bookingdata)=>{
             let bookings=[];
             for(let key in bookingdata ){
                 if(bookingdata.hasOwnProperty(key)){

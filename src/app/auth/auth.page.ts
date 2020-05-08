@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth.service';
+import { AuthResponseData ,AuthService } from './auth.service';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-auth',
@@ -11,15 +12,14 @@ import { NgForm } from '@angular/forms';
 })
 export class AuthPage implements OnInit {
 
-  isLogin:boolean= true;
+  isLogin:boolean= false;
 
-  constructor(private _authservice:AuthService , private router:Router , private _loadCtrl:LoadingController) { }
+  constructor(private _authservice:AuthService , private router:Router , private _loadCtrl:LoadingController , private _alterCtrl:AlertController) { }
 
   ngOnInit() {
   }
 
-  onLogin(){
-    this._authservice.login();
+  authenticate(email,password){
     this._loadCtrl.create({
       keyboardClose:true,
       message:'Logging in ...',
@@ -27,10 +27,37 @@ export class AuthPage implements OnInit {
 
     }).then((spinEl)=>{
       spinEl.present();
-      setTimeout(() => {
-        spinEl.dismiss();
+      let authObs = new Observable<AuthResponseData>();
+      if(this.isLogin){
+        console.log(email,password);
+        authObs = this._authservice.login(email,password);
+      }else {
+        authObs= this._authservice.signUp(email,password)
+      }
+      authObs.subscribe((responseData)=>{
+        console.log(responseData)
         this.router.navigateByUrl('/places/tabs/discover')
-      }, 1500);
+        spinEl.dismiss();
+      },errResponse=>{
+        console.log(errResponse)
+        let code = errResponse.error.error.message;
+        let message='';
+        if(code==='EMAIL_EXISTS'){
+          message = 'The Email already exists ,  please try with another one'
+        }else if (code==='EMAIL_NOT_FOUND'){
+          message ="Email not found , please check email id entered"
+        }else if(code ==='INVALID_PASSWORD'){
+          message = "Password entered is invalid"
+        }
+        this._alterCtrl.create({
+          header:'Error message',
+          message:message,
+          buttons:['Okay']
+        }).then((alertEl)=>{
+          alertEl.present();
+        })
+      });
+     
     })
   }
 
@@ -40,11 +67,7 @@ export class AuthPage implements OnInit {
     }
     const email = form.value.email;
     const password= form.value.password;
-
-    if(this.isLogin){
-      console.log(email,password);
-    }
-    this.router.navigateByUrl('/places/tabs/discover')
+    this.authenticate(email,password)
 
   }
   onSwitch(){

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, ModalController, ActionSheetController, LoadingController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController, LoadingController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PlaceService } from '../../place.service';
 import { Place } from '../../place.module';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { BookingService } from 'src/app/bookings/bookings.service';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-places-details',
@@ -29,21 +30,53 @@ export class PlacesDetailsPage implements OnInit,OnDestroy {
       private _bookingservice:BookingService,
       private _loadCtrl:LoadingController,
       private _router:Router,
-      private _authservice:AuthService) { }
+      private _authservice:AuthService,
+      private alterCtrl:AlertController) { }
 
   ngOnInit() {
-    this._route.params.subscribe((param:Params)=>{
-      if(!param){
-        this.navCtrl.navigateBack('/places/tabs/discover')
+    this._route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('placeId')) {
+        this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
       this.isloading = true;
-      this.placeSub=this._placeservice.findPlace(param.placeId).subscribe((place)=>{
-        this.isloading = false;
-        this.place = place;
-        this.isBookable = place.userId !== this._authservice.userId 
-      });
-    })
+      let fetchedUserId: string;
+      this._authservice.userId
+        .pipe(
+          take(1),
+          switchMap(userId => {
+            if (!userId) {
+              throw new Error('Found no user!');
+            }
+            fetchedUserId = userId;
+            return this._placeservice.findPlace(paramMap.get('placeId'));
+          })
+        )
+        .subscribe(
+          place => {
+            this.place = place;
+            this.isBookable = place.userId !== fetchedUserId;
+            this.isloading = false;
+          },error => {
+            this.isloading= false;
+            console.log(error)
+            this.alterCtrl
+              .create({
+                header: 'An error ocurred!',
+                message: 'Could not load place.',
+                buttons: [
+                  {
+                    text: 'Okay',
+                    handler: () => {
+                      this._router.navigate(['/places/tabs/discover']);
+                    }
+                  }
+                ]
+              })
+              .then(alertEl => alertEl.present());
+          }
+        );
+    });
   }
 
   onBook(){

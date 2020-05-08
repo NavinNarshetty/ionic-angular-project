@@ -52,10 +52,8 @@ export class PlaceService {
   }
 
   findPlace(id:string){
-    console.log(id,"id")
-    return this._http.get(`https://angular-ionic-915f6.firebaseio.com/offerd-places/${id}.json`).pipe(map((placeData:NewPlaceData)=>{
-     let editplace = new Place(id,placeData.title,placeData.imageUrl,placeData.description,placeData.price,new Date(placeData.avaliableFrom),new Date(placeData.avaliableTo),placeData.userId , placeData.location);
-     return editplace;
+    return this._http.get<NewPlaceData>(`https://angular-ionic-915f6.firebaseio.com/offerd-places/${id}.json`).pipe(map((placeData:NewPlaceData)=>{
+      return  new Place(id,placeData.title,placeData.imageUrl,placeData.description,placeData.price,new Date(placeData.avaliableFrom),new Date(placeData.avaliableTo),placeData.userId , placeData.location);
     }))
   }
 
@@ -101,7 +99,7 @@ export class PlaceService {
       } )
       updatedPlaces = [...places]
       const oldPlace = updatedPlaces[updatedIndex];
-      updatedPlaces[updatedIndex] = new Place(oldPlace.id , title,oldPlace.imageUrl,description,oldPlace.price,oldPlace.avaliableFrom,oldPlace.avaliableTo,this._authservice.userId,oldPlace.location);
+      updatedPlaces[updatedIndex] = new Place(oldPlace.id , title,oldPlace.imageUrl,description,oldPlace.price,oldPlace.avaliableFrom,oldPlace.avaliableTo,oldPlace.userId,oldPlace.location);
       return this._http.put(`https://angular-ionic-915f6.firebaseio.com/offerd-places/${placeId}.json`,{
         ...  updatedPlaces[updatedIndex] , id:null
       })
